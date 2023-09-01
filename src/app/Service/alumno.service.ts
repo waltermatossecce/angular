@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Alumno } from '../Models/Alumno';
-import { Observable,catchError,retry,throwError } from 'rxjs';
+import { Observable,catchError,throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -31,10 +31,9 @@ export class AlumnoService {
   }
   getClientes(id:number):Observable<Alumno>{
     return this.http.get<Alumno>(`${urlEndPoint}/${id}`).pipe(
-      catchError(e => {
-        this.router.navigate(['/lista'])
-        console.log(e.error.mensaje)
-        Swal.fire('Error al editar', e.error.mensaje, 'error');
+      catchError(e=>{
+        console.log(e.error.mensaje);
+        Swal.fire('Error al editar',e.error.mensaje,'error');
         return throwError(e);
       })
     )
